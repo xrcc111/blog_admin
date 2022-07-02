@@ -29,9 +29,10 @@ const progressStart = (to, from, next) => {
 const loginGuard = (to, from, next, options) => {
   const {message} = options
   console.log(!loginIgnore);
-  // 因为没做动态路由所以去掉鉴权
+  // 因为没做动态路由所以去掉鉴别
   // if (!loginIgnore.includes(to) && !checkAuthorization())
-  if (!checkAuthorization()) {
+  console.log(!checkAuthorization() && !loginIgnore.includes(to));
+  if (!checkAuthorization() && !loginIgnore.includes(to)) {
     message.warning('登录已失效，请重新登录')
     next({path: '/login'})
   } else {
