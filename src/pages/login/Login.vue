@@ -128,7 +128,7 @@ export default {
         //   this.$router.push('/demo')
         //   this.$message.success(loginRes.message, 3)
         // })
-        this.$router.push('/demo')
+        this.$router.push('/home')
         this.$message.success(loginRes.message, 3)
       } else {
         this.error = loginRes.message

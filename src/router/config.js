@@ -27,25 +27,30 @@ const options = {
       redirect: '/login',
       children: [
         {
-          path: 'demo',
-          name: '演示页',
+          path: 'home',
+          name: '我的',
           meta: {
             icon: 'file-ppt'
           },
-          component: () => import('@/pages/demo')
+          component: () => import('@/pages/home')
         },
         {
           path: 'parent1',
-          name: '父级路由1',
+          name: '我的博文',
           meta: {
             icon: 'dashboard',
           },
           component: BlankView,
           children: [
             {
-              path: 'demo1',
-              name: '演示页面1',
-              component: () => import('@/pages/demo'),
+              path: 'article',
+              name: '文章管理',
+              component: () => import('@/pages/article'),
+            },
+            {
+              path: 'label',
+              name: '标签管理',
+              component: () => import('@/pages/label'),
             }
           ]
         },
