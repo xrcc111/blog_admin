@@ -4,5 +4,8 @@ const BASE_URL = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_API
 module.exports = {
   LOGIN: `${BASE_URL}/users/login`,
   ROUTES: `${BASE_URL}/routes`,
-  LABEL:`${BASE_URL}//label`
+  LABEL:`${BASE_URL}/label`,
+  LABELADD:`${BASE_URL}/label/add`,
+  LABELUPDATE:`${BASE_URL}/label/update`,
+  LABELDELETE:`${BASE_URL}/label/delete`
 }
