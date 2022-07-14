@@ -113,11 +113,3 @@
     },
   }
 </script>
-<style lang="less" scoped>
-.pd-20{
-  padding: 10px 0;
-}
-.update{
-  cursor: pointer;
-}
-</style>
