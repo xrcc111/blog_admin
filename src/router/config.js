@@ -51,6 +51,11 @@ const options = {
               path: 'label',
               name: '标签管理',
               component: () => import('@/pages/label'),
+            },
+            {
+              path: 'link',
+              name: '友链管理',
+              component: () => import('@/pages/link'),
             }
           ]
         },

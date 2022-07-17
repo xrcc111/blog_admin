@@ -7,5 +7,9 @@ module.exports = {
   LABEL:`${BASE_URL}/label`,
   LABELADD:`${BASE_URL}/label/add`,
   LABELUPDATE:`${BASE_URL}/label/update`,
-  LABELDELETE:`${BASE_URL}/label/delete`
+  LABELDELETE:`${BASE_URL}/label/delete`,
+  CHAIN:`${BASE_URL}/links`,
+  CHAINADD:`${BASE_URL}/links/add`,
+  CHAINUPDATE:`${BASE_URL}/links/update`,
+  CHAINDELETE:`${BASE_URL}/links/delete`
 }
