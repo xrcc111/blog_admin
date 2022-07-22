@@ -56,6 +56,11 @@ const options = {
               path: 'link',
               name: '友链管理',
               component: () => import('@/pages/link'),
+            },
+            {
+              path: 'message',
+              name: '留言管理',
+              component: () => import('@/pages/message'),
             }
           ]
         },

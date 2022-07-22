@@ -126,9 +126,6 @@
         this.$refs.modal.showModal()
       },
       // 删除
-      deleteLabel(row) {
-        console.log(row);
-      },
       async confirm(row) {
         const {id} = row
         console.log(row);

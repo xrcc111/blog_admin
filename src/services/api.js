@@ -11,5 +11,7 @@ module.exports = {
   CHAIN:`${BASE_URL}/links`,
   CHAINADD:`${BASE_URL}/links/add`,
   CHAINUPDATE:`${BASE_URL}/links/update`,
-  CHAINDELETE:`${BASE_URL}/links/delete`
+  CHAINDELETE:`${BASE_URL}/links/delete`,
+  MESSAGE:`${BASE_URL}/users/manager`,
+  MESSAGEDELETE:`${BASE_URL}/users/delete`
 }
