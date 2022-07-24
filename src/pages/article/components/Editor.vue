@@ -25,22 +25,39 @@ export default Vue.extend({
     data() {
         return {
             editor: null,
-            html: '<p>hello</p>',
+            html: '',
             toolbarConfig: { },
             editorConfig: { placeholder: '请输入内容...' },
             mode: 'default', // or 'simple'
         }
     },
+    props:{
+      richContent:{
+        type:String,
+        default:''
+      }
+    },
+    watch:{
+      html:{
+        handler(val) {
+            this.html = val
+            this.getContent(this.html)
+        }
+      }
+    },
+    mounted() {
+      this.html = this.richContent
+      console.log(this.html);
+    },
     methods: {
         onCreated(editor) {
             this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
+            this.html = editor.getHtml()
         },
-    },
-    mounted() {
-        // 模拟 ajax 请求，异步渲染编辑器
-        setTimeout(() => {
-            this.html = '<p>模拟 Ajax 异步设置内容 HTML</p>'
-        }, 1500)
+        // 将内容传递给父组件
+        getContent(value) {
+          this.$emit('featchContent', value)
+        }
     },
     beforeDestroy() {
         const editor = this.editor

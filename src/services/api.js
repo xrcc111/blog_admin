@@ -17,5 +17,6 @@ module.exports = {
   ARTICLE:`${BASE_URL}/article`, // 文章
   ARTICLEADD:`${BASE_URL}/article/add`, // 新增文章  
   ARTICLEUPDATE:`${BASE_URL}/article/update`, // 修改文章  
-  ARTICLEDELETE:`${BASE_URL}/article/delete` // 删除文章
+  ARTICLEDELETE:`${BASE_URL}/article/delete`, // 删除文章
+  ARTICLEQUERY:`${BASE_URL}/article/query`, //单条文章查询
 }

@@ -114,12 +114,11 @@ export default {
         if (!err) {
           let result
           this.id ? result = await chainUpdate(Object.assign(values,{id:this.id})) : result = await chainAdd(values)
-          if(result.status === 200) {
+          if(result.code === 200) {
             this.$message.success('操作成功')
           }else{
             this.$message.error('操作失败')
           }
-          this.visible = false;
           this.$emit('labelQuery')
           this.form.resetFields()// 清空表单数据
         }

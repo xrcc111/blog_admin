@@ -28,7 +28,7 @@
          </a-select>
        </a-form-model-item>
        <a-form-model-item label="文章内容" prop="content">
-        <editor></editor>
+        <editor @featchContent="featchContent" :richContent ="richContent"></editor>
        </a-form-model-item>
      </a-form-model>
     </a-modal>
@@ -36,21 +36,38 @@
 </template>
 <script>
  import { labelQuery } from '@/services/label'
+ // eslint-disable-next-line no-unused-vars
+ import { articleAdd, articleUpdate, articleQueryOne } from '@/services/article'
  import Editor from './Editor.vue'
 export default {
   data() {
     return {
       visible: false,
       articleId:'',
-      // labelCol: { span: 4 },
-      // wrapperCol: { span: 14 },
+      labelCol: { span: 3 },
+      wrapperCol: { span: 20 },
       labelList:[],
+      richContent:'',
       form: {
         title: '',
         coverImg:"",
         labelId: undefined,
+        content: null
       },
-      rules:{}
+      rules:{
+        title: [
+          { required: true, message: '请输入文章标题', trigger: 'blur' },
+        ],
+        coverImg: [
+          { required: true, message: '请输入文章封面图', trigger: 'blur' },
+        ],
+        labelId: [
+          { required: true, message: '请输入文章标签', trigger: 'change' },
+        ],
+        content: [
+          { required: true, message: '请输入文章内容', trigger: 'blur' },
+        ],
+      }
     }
   },
   components:{
@@ -60,7 +77,24 @@ export default {
     this.getLabel()
   },
   methods:{
-    showModal() {
+   async showModal(val) {
+      if(val) {
+        const {id} = val
+        this.articleId = id
+        const result = await articleQueryOne({id})
+        const {data} = result
+        if(data.code === 200) {
+          const currentData = data.data[0]
+          this.form.title = currentData.title
+          this.form.coverImg = currentData.cover_img
+          this.form.labelId = currentData.label_id
+          this.form.content = currentData.content,
+          this.richContent = currentData.content
+        }
+        console.log(result);
+      }else {
+        this.articleId= ''
+      }
       this.visible = true
     },
     // 获取标签
@@ -75,9 +109,17 @@ export default {
       },
     // 提交
     onSubmit() {
-      this.$refs.ruleForm.validate(valid => {
+      this.$refs.ruleForm.validate( async valid => {
         if (valid) {
-          alert('submit!');
+          let result 
+          this.articleId ? result = await articleUpdate(Object.assign({id:this.articleId}, this.form)) :result = await articleAdd(this.form)
+          if(result.status === 200) {
+            this.$message.success('操作成功')
+          }else{
+            this.$message.error('操作失败')
+          }
+           this.$emit('fetchArticle')
+          this.resetForm()
         } else {
           console.log('error submit!!');
           return false;
@@ -89,7 +131,10 @@ export default {
       this.$refs.ruleForm.resetFields()
       this.visible = false
     },
-    // labelId, title, coverImg, content
+    // 获取内容
+    featchContent(value) {
+      this.form.content = value
+    }
   }
 };
 </script>

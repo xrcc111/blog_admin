@@ -30,7 +30,7 @@
       </a-space>
      </template>
     </a-table>
-    <Modal ref="modal"/>
+    <Modal ref="modal" @fetchArticle="fetchArticle"/>
   </div>
 </template>
 
@@ -137,10 +137,14 @@ import Modal from './components/modal.vue'
       increase() {
         this.$refs.modal.showModal()
       },
+      updateArticle(value) {
+        this.$refs.modal.showModal(value)
+      },
       // 取消
       cancel() {
         this.$message.error('已取消');
       },
+      // 删除
       async confirm(row) {
         const {id} = row
         const result = await articleDelete({id})
