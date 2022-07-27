@@ -12,6 +12,8 @@
             :defaultConfig="editorConfig"
             :mode="mode"
             @onCreated="onCreated"
+            @onChange="handleOnChange"
+            @onDestroyed="HandleOnDestroyed"
         />
     </div>
 </template>
@@ -32,37 +34,40 @@ export default Vue.extend({
         }
     },
     props:{
-      richContent:{
+      value:{
         type:String,
         default:''
+      },
+      visible:{
+        type:Boolean,
+        default:false
       }
     },
     watch:{
-      html:{
+      value:{
         handler(val) {
-            this.html = val
-            this.getContent(this.html)
+          this.html = val
         }
       }
-    },
-    mounted() {
-      this.html = this.richContent
-      console.log(this.html);
     },
     methods: {
         onCreated(editor) {
             this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
-            this.html = editor.getHtml()
+            this.editor.setHtml(this.value) // 在此处做内容回显
         },
-        // 将内容传递给父组件
-        getContent(value) {
-          this.$emit('featchContent', value)
+        handleOnChange(editor) {
+         this.html = editor.getHtml()
+         this.$emit('change', this.html)
+        },
+        HandleOnDestroyed(editor) {
+            editor.destroy()
         }
     },
     beforeDestroy() {
         const editor = this.editor
         if (editor == null) return
         editor.destroy() // 组件销毁时，及时销毁编辑器
+        console.log('------destory',);
     }
 })
 </script>

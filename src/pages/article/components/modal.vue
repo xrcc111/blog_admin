@@ -28,7 +28,7 @@
          </a-select>
        </a-form-model-item>
        <a-form-model-item label="文章内容" prop="content">
-        <editor @featchContent="featchContent" :richContent ="richContent"></editor>
+        <editor v-model="form.content" @change="change" :value ="richContent"></editor>
        </a-form-model-item>
      </a-form-model>
     </a-modal>
@@ -36,7 +36,6 @@
 </template>
 <script>
  import { labelQuery } from '@/services/label'
- // eslint-disable-next-line no-unused-vars
  import { articleAdd, articleUpdate, articleQueryOne } from '@/services/article'
  import Editor from './Editor.vue'
 export default {
@@ -91,7 +90,6 @@ export default {
           this.form.content = currentData.content,
           this.richContent = currentData.content
         }
-        console.log(result);
       }else {
         this.articleId= ''
       }
@@ -132,7 +130,7 @@ export default {
       this.visible = false
     },
     // 获取内容
-    featchContent(value) {
+    change(value) {
       this.form.content = value
     }
   }
