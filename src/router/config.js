@@ -1,6 +1,6 @@
 import TabsView from '@/layouts/tabs/TabsView'
 import BlankView from '@/layouts/BlankView'
-import PageView from '@/layouts/PageView'
+// import PageView from '@/layouts/PageView'
 
 // 路由配置
 const options = {
@@ -65,17 +65,17 @@ const options = {
           ]
         },
         {
-          path: 'parent2',
-          name: '父级路由2',
+          path: 'resources',
+          name: '网站资源',
           meta: {
             icon: 'form'
           },
-          component: PageView,
+          component: BlankView,
           children: [
             {
-              path: 'demo2',
-              name: '演示页面2',
-              component: () => import('@/pages/demo'),
+              path: 'sitelog',
+              name: '网站日志',
+              component: () => import('@/pages/site'),
             }
           ]
         },

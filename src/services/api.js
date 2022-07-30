@@ -4,6 +4,7 @@ const BASE_URL = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_API
 module.exports = {
   LOGIN: `${BASE_URL}/users/login`, // 用户登录
   ROUTES: `${BASE_URL}/routes`,
+  MY:`${BASE_URL}/my`, // 关于我
   LABEL:`${BASE_URL}/label`, // 标签
   LABELADD:`${BASE_URL}/label/add`, // 添加标签
   LABELUPDATE:`${BASE_URL}/label/update`, // 更新标签
