@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-modal v-model="visible" :width="720" :title="articleId? '修改':'新增'" @ok="onSubmit" @cancel="resetForm">
+    <a-modal v-model="visible" :width="800" :title="articleId? '修改':'新增'" @ok="onSubmit" @cancel="resetForm">
        <a-form-model
          ref="ruleForm"
          :model="form"
@@ -76,6 +76,32 @@ export default {
     this.getLabel()
   },
   methods:{
+  htmlEscape(str) { //字符转义
+	var escapesMap = {
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#039;'
+		},
+		reUnescapedHtml = new RegExp(/[<>"']/g);
+	return (str && reUnescapedHtml.test(str)) ? str.replace(reUnescapedHtml, function(chr) {
+		return escapesMap[chr];
+	}) : (str || "");
+},
+
+htmlUnEscape(str) { //反转义
+	var unescapes = {
+			'&amp;': '&',
+			'&lt;': '<',
+			'&gt;': '>',
+			'&quot;': '"',
+			'&#39;': "'"
+		},
+		reEscapedHtml = new RegExp(/&(?:amp|lt|gt|quot|#39);/g);
+	return (str && reEscapedHtml.test(str)) ? str.replace(reEscapedHtml, function(entity) {
+		return unescapes[entity];
+	}) : (str || '')
+},
    async showModal(val) {
       if(val) {
         const {id} = val
@@ -87,8 +113,9 @@ export default {
           this.form.title = currentData.title
           this.form.coverImg = currentData.cover_img
           this.form.labelId = currentData.label_id
-          this.form.content = currentData.content,
-          this.richContent = currentData.content
+          const contentData = this.htmlEscape(currentData.content)
+          this.form.content = contentData
+          this.richContent = contentData
         }
       }else {
         this.articleId= ''
@@ -110,6 +137,8 @@ export default {
       this.$refs.ruleForm.validate( async valid => {
         if (valid) {
           let result 
+          this.form.content = this.htmlUnEscape(this.form.content)
+          console.log(this.form.content)
           this.articleId ? result = await articleUpdate(Object.assign({id:this.articleId}, this.form)) :result = await articleAdd(this.form)
           if(result.status === 200) {
             this.$message.success('操作成功')
@@ -132,6 +161,7 @@ export default {
     // 获取内容
     change(value) {
       this.form.content = value
+      console.log(value)
     }
   }
 };

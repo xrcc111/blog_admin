@@ -1,73 +1,75 @@
 <template>
-    <div style="border: 1px solid #ccc;">
-        <Toolbar
-            style="border-bottom: 1px solid #ccc"
-            :editor="editor"
-            :defaultConfig="toolbarConfig"
-            :mode="mode"
-        />
-        <Editor
-            style="height: 300px; overflow-y: hidden;"
-            v-model="html"
-            :defaultConfig="editorConfig"
-            :mode="mode"
-            @onCreated="onCreated"
-            @onChange="handleOnChange"
-            @onDestroyed="HandleOnDestroyed"
-        />
+    <div>
+        <div style="border: 1px solid #ccc; margin-top: 10px;">
+            <!-- 工具栏 -->
+            <Toolbar
+                style="border-bottom: 1px solid #ccc"
+                :editor="editor"
+                :defaultConfig="toolbarConfig"
+            />
+            <!-- 编辑器 -->
+            <Editor
+                style="height: 400px; overflow-y: hidden;"
+                :defaultConfig="editorConfig"
+                v-model="html"
+                @onChange="onChange"
+                @onCreated="onCreated"
+            />
+        </div>
     </div>
 </template>
-<script>
-import Vue from 'vue'
-import '@wangeditor/editor/dist/css/style.css'
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 
-export default Vue.extend({
+<script>
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+export default {
+    name: 'MyEditor',
     components: { Editor, Toolbar },
+    props: {
+      value:{
+        type: String,
+        default: ''
+      }
+    },
     data() {
         return {
             editor: null,
             html: '',
-            toolbarConfig: { },
-            editorConfig: { placeholder: '请输入内容...' },
-            mode: 'default', // or 'simple'
+            toolbarConfig: {
+                // toolbarKeys: [ /* 显示哪些菜单，如何排序、分组 */ ],
+                // excludeKeys: [ /* 隐藏哪些菜单 */ ],
+            },
+            editorConfig: {
+                placeholder: '请输入内容...',
+                // autoFocus: false,
+                // 所有的菜单配置，都要在 MENU_CONF 属性下
+                MENU_CONF: {}
+            }
         }
-    },
-    props:{
-      value:{
-        type:String,
-        default:''
-      },
-      visible:{
-        type:Boolean,
-        default:false
-      }
     },
     watch:{
       value:{
         handler(val) {
-          this.html = val
+          if(val) {
+            this.html = val
+          }
         }
       }
     },
     methods: {
         onCreated(editor) {
-            this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
-            this.editor.setHtml(this.value) // 在此处做内容回显
+            this.editor = Object.seal(editor) // 【注意】一定要用 Object.seal() 否则会报错
         },
-        handleOnChange(editor) {
-         this.html = editor.getHtml()
-         this.$emit('change', this.html)
+        onChange(editor) {
+          const value  = editor.getHtml()
+            this.$emit('change', value) // onChange 时获取编辑器最新内容
         },
-        HandleOnDestroyed(editor) {
-            editor.destroy()
-        }
     },
     beforeDestroy() {
         const editor = this.editor
         if (editor == null) return
-        editor.destroy() // 组件销毁时，及时销毁编辑器
-        console.log('------destory',);
-    }
-})
+        editor.destroy() // 组件销毁时，及时销毁 editor ，重要！！！
+    },
+}
 </script>
+
+<style src="@wangeditor/editor/dist/css/style.css"></style>
