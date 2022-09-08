@@ -81,7 +81,8 @@ export default {
 			'<': '&lt;',
 			'>': '&gt;',
 			'"': '&quot;',
-			"'": '&#039;'
+			"'": '&#039;',
+      '\n': '<br/>' 
 		},
 		reUnescapedHtml = new RegExp(/[<>"']/g);
 	return (str && reUnescapedHtml.test(str)) ? str.replace(reUnescapedHtml, function(chr) {
@@ -95,7 +96,8 @@ htmlUnEscape(str) { //反转义
 			'&lt;': '<',
 			'&gt;': '>',
 			'&quot;': '"',
-			'&#39;': "'"
+			'&#39;': "'",
+      '<br/>': '\n'
 		},
 		reEscapedHtml = new RegExp(/&(?:amp|lt|gt|quot|#39);/g);
 	return (str && reEscapedHtml.test(str)) ? str.replace(reEscapedHtml, function(entity) {
@@ -113,7 +115,7 @@ htmlUnEscape(str) { //反转义
           this.form.title = currentData.title
           this.form.coverImg = currentData.cover_img
           this.form.labelId = currentData.label_id
-          const contentData = this.htmlEscape(currentData.content)
+          const contentData = this.htmlUnEscape(currentData.content)
           this.form.content = contentData
           this.richContent = contentData
         }
@@ -137,7 +139,7 @@ htmlUnEscape(str) { //反转义
       this.$refs.ruleForm.validate( async valid => {
         if (valid) {
           let result 
-          this.form.content = this.htmlUnEscape(this.form.content)
+          this.form.content = this.htmlEscape(this.form.content)
           console.log(this.form.content)
           this.articleId ? result = await articleUpdate(Object.assign({id:this.articleId}, this.form)) :result = await articleAdd(this.form)
           if(result.status === 200) {
@@ -145,8 +147,9 @@ htmlUnEscape(str) { //反转义
           }else{
             this.$message.error('操作失败')
           }
-           this.$emit('fetchArticle')
           this.resetForm()
+          this.$emit('fetchArticle')
+          
         } else {
           console.log('error submit!!');
           return false;
@@ -156,6 +159,13 @@ htmlUnEscape(str) { //反转义
     // 取消
     resetForm() {
       this.$refs.ruleForm.resetFields()
+      this.form = {
+        content :null,
+        title:'',
+        coverImg:'',
+        labelId:'',
+      }
+      this.richContent = ''
       this.visible = false
     },
     // 获取内容

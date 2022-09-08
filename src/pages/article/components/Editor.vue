@@ -50,9 +50,12 @@ export default {
       value:{
         handler(val) {
           if(val) {
-            this.html = val
+            this.$nextTick(() => {
+              this.html = val
+            })
           }
-        }
+        },
+        immediate: true
       }
     },
     methods: {
