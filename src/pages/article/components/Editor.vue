@@ -42,7 +42,9 @@ export default {
                 placeholder: '请输入内容...',
                 // autoFocus: false,
                 // 所有的菜单配置，都要在 MENU_CONF 属性下
-                MENU_CONF: {}
+                MENU_CONF: {'lineHeight':{
+                  lineHeightList: ['1']                 
+                }}
             }
         }
     },
