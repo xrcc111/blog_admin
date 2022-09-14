@@ -90,7 +90,6 @@ export default {
   },
   methods: {
     showModal(val) {
-      console.log(val);
       if(val) {
       const { id } = val
       this.id = id
@@ -114,13 +113,14 @@ export default {
         if (!err) {
           let result
           this.id ? result = await chainUpdate(Object.assign(values,{id:this.id})) : result = await chainAdd(values)
-          if(result.code === 200) {
+          console.log(result)
+          if(result.data.code === 200) {
             this.$message.success('操作成功')
           }else{
             this.$message.error('操作失败')
           }
           this.$emit('labelQuery')
-          this.form.resetFields()// 清空表单数据
+          this.handleCancel()// 清空表单数据
         }
       });
      
