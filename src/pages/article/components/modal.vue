@@ -76,34 +76,6 @@ export default {
     this.getLabel()
   },
   methods:{
-  htmlEscape(str) { //字符转义
-	var escapesMap = {
-			'<': '&lt;',
-			'>': '&gt;',
-			'"': '&quot;',
-			"'": '&#039;',
-      '\n': '<br/>' 
-		},
-		reUnescapedHtml = new RegExp(/[<>"']/g);
-	return (str && reUnescapedHtml.test(str)) ? str.replace(reUnescapedHtml, function(chr) {
-		return escapesMap[chr];
-	}) : (str || "");
-},
-
-htmlUnEscape(str) { //反转义
-	var unescapes = {
-			'&amp;': '&',
-			'&lt;': '<',
-			'&gt;': '>',
-			'&quot;': '"',
-			'&#39;': "'",
-      '<br/>': '\n'
-		},
-		reEscapedHtml = new RegExp(/&(?:amp|lt|gt|quot|#39);/g);
-	return (str && reEscapedHtml.test(str)) ? str.replace(reEscapedHtml, function(entity) {
-		return unescapes[entity];
-	}) : (str || '')
-},
    async showModal(val) {
       if(val) {
         const {id} = val
@@ -115,7 +87,7 @@ htmlUnEscape(str) { //反转义
           this.form.title = currentData.title
           this.form.coverImg = currentData.cover_img
           this.form.labelId = currentData.label_id
-          const contentData = this.htmlUnEscape(currentData.content)
+          const contentData = currentData.content
           this.form.content = contentData
           this.richContent = contentData
         }
@@ -139,7 +111,6 @@ htmlUnEscape(str) { //反转义
       this.$refs.ruleForm.validate( async valid => {
         if (valid) {
           let result 
-          this.form.content = this.htmlEscape(this.form.content)
           console.log(this.form.content)
           this.articleId ? result = await articleUpdate(Object.assign({id:this.articleId}, this.form)) :result = await articleAdd(this.form)
           if(result.status === 200) {
